@@ -1,0 +1,288 @@
+<!-- Created by David Dolejší -->
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Messenger</title>
+		<link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
+		<script src="https://kit.fontawesome.com/50ccabcbd3.js" crossorigin="anonymous"></script>
+		<script src="https://www.gstatic.com/firebasejs/7.17.0/firebase-app.js"></script>
+		<script src="https://www.gstatic.com/firebasejs/7.17.0/firebase-database.js"></script>
+		<link rel="stylesheet" href="style.css">
+		<script src="main.js" charset="utf-8"></script>
+	</head>
+	<body>
+		<div class="login">
+			<h1>Messenger</h1>
+			<div class="login-form">
+			  <input id="nameInput" placeholder="Enter your name">
+			  <button id="joinBtn">Join</button>
+			  <small class="name-alert"></small>
+			</div>
+		</div>
+		<div class="main">
+			<div class="user-list">
+				<h3>Active Users</h3>
+				<ul id="userList"></ul>
+			</div>
+			<div class="header">
+				<h2>Messenger</h2>
+				<button id="userBtn">
+				  <i class="fa fa-users" aria-hidden="true"></i>
+				</button>
+			</div>
+			<div class="message-container"></div>
+			<div class="sending-form">
+				<input id="messageInput" placeholder="Type your message">
+				<button id="sendBtn">
+				  <i class="fa fa-paper-plane" aria-hidden="true"></i>
+				</button>
+			</div>
+		</div>
+		<style>
+		/* Created by David Dolejší */
+
+* {
+	margin: 0;
+	box-sizing: border-box;
+}
+
+body {
+	font-family: "Lato", sans-serif;
+	line-height: 1.5;
+	height: 100vh;
+}
+
+button {
+	outline: none;
+	border-radius: 20px;
+	border: none;
+	background: grey;
+	color: white;
+	font-size: 14px;
+	font-weight: bold;
+	padding: 6px;
+}
+
+button:hover {
+	background: silver;
+	cursor: pointer;
+}
+
+input {
+	outline: none;
+	border-radius: 20px;
+	border: none;
+	background: white;
+	color: black;
+	font-size: 14px;
+	padding: 6px;
+}
+
+.main {
+	max-width: 1000px;
+	margin: auto;
+}
+
+.header {
+	width: 100%;
+	height: 60px;
+	background: skyblue;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 8px;
+}
+
+.message-container {
+	position: relative;
+	width: 100%;
+	height: calc(100vh - 120px);
+	padding: 8px;
+	overflow-y: scroll;
+	background: silver;
+	display: flex;
+	flex-direction: column-reverse;
+}
+
+.sending-form {
+	position: relative;
+	bottom: 0;
+	width: 100%;
+	height: 60px;
+	background: skyblue;
+	display: flex;
+	align-items: center;
+	padding: 8px;
+}
+
+.sending-form > input {
+	flex: 1 1 auto;
+	margin-right: 8px;
+}
+
+.message {
+	border-radius: 8px;
+	padding: 8px;
+	margin-top: 12px;
+}
+
+.message_mine {
+  align-self: flex-end;
+  background: pink;
+}
+
+.message_casual {
+  align-self: flex-start;
+  background: white;
+}
+
+.user-list {
+	position: fixed;
+	z-index: 1;
+	background: grey;
+	color: white;
+	width: 200px;
+	height: 100vh;
+	right: 0;
+	padding: 8px;
+	transition: 600ms transform;
+}
+
+.user-list_hidden {
+	transform: translate(100%,0);
+}
+
+.user-list ul {
+	list-style: none;
+	padding: 0;
+}
+
+.user-list li {
+	margin-top: 12px;
+}
+
+.login {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.login-form {
+  margin-top: 12px;
+  padding: 8px;
+  background: skyblue;
+  border-radius: 20px;
+}
+
+.name-alert {
+  color: red;
+}
+
+		</style>
+
+		<script>
+		const _0x3139 = ['message_casual', 'replace', 'click', 'child', 'show', 'Name must have 3 - 20 characters!', '.login', 'join', '#sendBtn', 'toLocaleTimeString', '</b>\x0a          <small>', 'ServerValue', 'onDisconnect', 'map', 'keys', '<li>', 'ref', 'AIzaSyDAicXyg5ziMeIEF2QSBNqrMH16Tm633WU', '<div class=\"message ', 'en-US', 'database', 'initializeApp', 'prototype', 'TIMESTAMP', '\">\x0a          <b>', 'DOMContentLoaded', 'none', 'style', 'remove', 'name', 'addEventListener', '#nameInput', 'display', 'innerText', 'innerHTML', 'message_mine', '</ul>', 'defineProperties', '#userBtn', '.message-container', 'val', 'contains', '#userList', '</p>\x0a      </div>', 'users', 'values', 'keydown', 'which', 'user-list_hidden', 'then', 'target', 'G-9YT62KTZ0T', 'length', 'timestamp', '#joinBtn', '.main', 'key', '#messageInput', 'value', 'block', 'global-chat-e5840.appspot.com', 'https://global-chat-e5840.firebaseio.com', '.user-list', 'project-only-database', '</small>\x0a          <p>', '.name-alert', '1:447651600043:web:108cf3a60f1d38a9b909ee', '447651600043', '&lt;', 'add', 'classList', 'hide', '&gt;', 'Name may contain only letters!', 'messages', 'push'];
+(function (_0x352292, _0x3139e3) {
+    const _0x415b30 = function (_0x4c579e) {
+        while (--_0x4c579e) {
+            _0x352292['push'](_0x352292['shift']());
+        }
+    };
+    _0x415b30(++_0x3139e3);
+}(_0x3139, 0x143));
+const _0x415b = function (_0x352292, _0x3139e3) {
+    _0x352292 = _0x352292 - 0x0;
+    let _0x415b30 = _0x3139[_0x352292];
+    return _0x415b30;
+};
+
+function $(_0x1df0cb) {
+    return document['querySelector'](_0x1df0cb);
+}
+Object[_0x415b('0x12')](HTMLElement[_0x415b('0x3')], {
+    'show': {
+        'value': function (_0x5950be = _0x415b('0x28')) {
+            this[_0x415b('0x8')][_0x415b('0xd')] = _0x5950be;
+        }
+    },
+    'hide': {
+        'value': function () {
+            this[_0x415b('0x8')][_0x415b('0xd')] = _0x415b('0x7');
+        }
+    }
+});
+const firebaseConfig = {
+    'apiKey': _0x415b('0x4a'),
+    'authDomain': 'global-chat-e5840.firebaseapp.com',
+    'databaseURL': _0x415b('0x2a'),
+    'projectId': _0x415b('0x2c'),
+    'storageBucket': _0x415b('0x29'),
+    'messagingSenderId': _0x415b('0x30'),
+    'appId': _0x415b('0x2f'),
+    'measurementId': _0x415b('0x20')
+};
+firebase[_0x415b('0x2')](firebaseConfig);
+const database = firebase[_0x415b('0x1')](),
+    messagesRef = database[_0x415b('0x49')](_0x415b('0x37')),
+    usersRef = database['ref'](_0x415b('0x19'));
+let name, id;
+addEventListener(_0x415b('0x6'), init);
+
+function init() {
+    $(_0x415b('0x24'))[_0x415b('0x34')](), $(_0x415b('0x2e'))[_0x415b('0x34')](), _0x2e9521(), addEventListener(_0x415b('0x3b'), _0xca7b73 => {
+        if (!$(_0x415b('0x2b'))['classList'][_0x415b('0x16')](_0x415b('0x1d')) && !$(_0x415b('0x2b'))[_0x415b('0x16')](_0xca7b73[_0x415b('0x1f')])) _0x2e9521();
+        else $(_0x415b('0x13'))[_0x415b('0x16')](_0xca7b73[_0x415b('0x1f')]) && _0x1e0bf5();
+    }), $(_0x415b('0x41'))[_0x415b('0xb')](_0x415b('0x3b'), _0x464f17), $(_0x415b('0x23'))[_0x415b('0xb')](_0x415b('0x3b'), _0x1f453c), addEventListener(_0x415b('0x1b'), _0x5811b3 => {
+        name && _0x5811b3[_0x415b('0x1c')] == 0xd && _0x464f17();
+    });
+
+    function _0x2e9521() {
+        $(_0x415b('0x2b'))[_0x415b('0x33')][_0x415b('0x32')](_0x415b('0x1d'));
+    }
+
+    function _0x1e0bf5() {
+        $(_0x415b('0x2b'))[_0x415b('0x33')][_0x415b('0x9')](_0x415b('0x1d'));
+    }
+
+    function _0x464f17() {
+        const _0x1dc773 = $(_0x415b('0x26'))[_0x415b('0x27')];
+        if (_0x1dc773 == '') return;
+        messagesRef[_0x415b('0x38')]({
+            'id': id,
+            'content': _0x1dc773,
+            'name': name,
+            'timestamp': firebase[_0x415b('0x1')][_0x415b('0x44')][_0x415b('0x4')]
+        })[_0x415b('0x1e')](() => {
+            $(_0x415b('0x26'))[_0x415b('0x27')] = '';
+        });
+    }
+
+    function _0x1f453c() {
+        name = $(_0x415b('0xc'))['value'];
+        if (name['length'] < 0x3 || name[_0x415b('0x21')] > 0x14) $(_0x415b('0x2e'))[_0x415b('0xe')] = _0x415b('0x3e'), $(_0x415b('0x2e'))[_0x415b('0x3d')]();
+        else name['match'](/[^a-zA-Z]/) ? ($(_0x415b('0x2e'))['innerText'] = _0x415b('0x36'), $(_0x415b('0x2e'))[_0x415b('0x3d')]()) : (id = usersRef[_0x415b('0x38')](name)[_0x415b('0x25')], usersRef[_0x415b('0x3c')](id)[_0x415b('0x45')]()[_0x415b('0x9')](), usersRef['on'](_0x415b('0x27'), _0x40f455), messagesRef['on'](_0x415b('0x27'), _0x17682c), $(_0x415b('0x3f'))[_0x415b('0x34')](), $(_0x415b('0x24'))[_0x415b('0x3d')]());
+    }
+
+    function _0x40f455(_0x144a91) {
+        const _0x1e2840 = _0x144a91[_0x415b('0x15')]();
+        if (!_0x1e2840) return;
+        const _0x46f4c9 = Object[_0x415b('0x1a')](_0x1e2840)['map'](_0x24c37a => _0x415b('0x48') + _0x24c37a + _0x415b('0x11'));
+        $(_0x415b('0x17'))['innerHTML'] = _0x46f4c9[_0x415b('0x40')]('');
+    }
+
+    function _0x17682c(_0x5def3b) {
+        const _0x54782d = _0x5def3b[_0x415b('0x15')]();
+        if (!_0x54782d) return;
+        const _0x34dab0 = Object[_0x415b('0x47')](_0x54782d)[_0x415b('0x46')](_0x3ccd11 => _0x415b('0x4b') + (_0x54782d[_0x3ccd11]['id'] == id ? _0x415b('0x10') : _0x415b('0x39')) + _0x415b('0x5') + _0x54782d[_0x3ccd11][_0x415b('0xa')] + _0x415b('0x43') + new Date(_0x54782d[_0x3ccd11][_0x415b('0x22')])[_0x415b('0x42')](_0x415b('0x0')) + _0x415b('0x2d') + _0x54782d[_0x3ccd11]['content'][_0x415b('0x3a')](/</g, _0x415b('0x31'))[_0x415b('0x3a')](/>/g, _0x415b('0x35')) + _0x415b('0x18'));
+        $(_0x415b('0x14'))[_0x415b('0xf')] = _0x34dab0['reverse']()[_0x415b('0x40')]('');
+    }
+}
+
+		</script>
+	</body>
+</html>
